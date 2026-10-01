@@ -136,7 +136,7 @@ export const videojuegos_retro = [
   },
 ];
 
-//TABLA A
+// TABLA A
 export function recargo_descuento(precioBase, estado) {
   let ajuste = 0;
 
@@ -156,11 +156,11 @@ export function recargo_descuento(precioBase, estado) {
     default:
       ajuste = 0;
   }
-  //CALCULO DEL PRECIO BASE
+  // CALCULO DEL PRECIO BASE
   const precioAjustado = precioBase * (1 + ajuste);
   return precioAjustado;
 }
-//TABLA B
+// TABLA B
 export const descuento_volumen = (cantidad) => {
   if (cantidad >= 4) {
     return 0.10; // 10% de descuento
@@ -173,7 +173,17 @@ export const descuento_volumen = (cantidad) => {
 // TABLA C
 export const es_stock_bajo = (stock) => stock < 3;
 
-//FINAL (LA MEZCLA DE LOS 3)
-export function calculo_final{
-        
-} 
+//FINAL (LA MEZCLA DE A + B)
+// Función para calcular el precio unitario final combinando Tabla A y Tabla B
+export function calculo_final(precioBase, estado, cantidad) {
+  // TABLA A
+  const precioAjustadoEstado = recargo_descuento(precioBase, estado);
+  
+  // TABLA B
+  const pctDescuentoVolumen = descuento_volumen(cantidad);
+  
+  // FINAL
+  const precioUnitarioFinal = precioAjustadoEstado * (1 - pctDescuentoVolumen);
+  
+  return precioUnitarioFinal;
+}
