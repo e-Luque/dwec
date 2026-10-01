@@ -136,3 +136,44 @@ export const videojuegos_retro = [
   },
 ];
 
+//TABLA A
+export function recargo_descuento(precioBase, estado) {
+  let ajuste = 0;
+
+  switch (estado) {
+    case "nuevo-precintado":
+      ajuste = 0.25; // +25%
+      break;
+    case "usado-como-nuevo":
+      ajuste = 0.00; // 0%
+      break;
+    case "usado-caja-danada":
+      ajuste = -0.15; // -15%
+      break;
+    case "solo-cartucho":
+      ajuste = -0.30; // -30%
+      break;
+    default:
+      ajuste = 0;
+  }
+  //CALCULO DEL PRECIO BASE
+  const precioAjustado = precioBase * (1 + ajuste);
+  return precioAjustado;
+}
+//TABLA B
+export const descuento_volumen = (cantidad) => {
+  if (cantidad >= 4) {
+    return 0.10; // 10% de descuento
+  } else if (cantidad >= 2) {
+    return 0.05; // 5% de descuento
+  } else {
+    return 0.00; // 0% de descuento
+  }
+};
+// TABLA C
+export const es_stock_bajo = (stock) => stock < 3;
+
+//FINAL (LA MEZCLA DE LOS 3)
+export function calculo_final{
+        
+} 
