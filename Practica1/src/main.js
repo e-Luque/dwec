@@ -1,5 +1,6 @@
 import { videojuegos_retro } from "./catalogo.js";
 import { gestionarMenuCatalogo } from "./menuCatalogo.js";
+import { buscarProducto } from "./menuCatalogo.js"
 
 let opcion = 0;
 
@@ -23,7 +24,7 @@ do {
       break;
 
     case 2:
-      console.log("Buscando producto...");
+      buscarProducto(videojuegos_retro)
       break;
 
     case 3:
