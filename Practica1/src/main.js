@@ -1,6 +1,7 @@
 import { videojuegos_retro } from "./catalogo.js";
 import { gestionarMenuCatalogo } from "./menuCatalogo.js";
 import { buscarProducto } from "./menuCatalogo.js"
+import { registrarVenta } from "./ventas.js";
 
 let opcion = 0;
 
@@ -28,7 +29,7 @@ do {
       break;
 
     case 3:
-      console.log("Registrando venta...");
+      registrarVenta(videojuegos_retro)
       break;
 
     case 4:

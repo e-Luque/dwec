@@ -3,7 +3,7 @@ import { es_stock_bajo } from "./catalogo.js";
 function imprimirJuego(juego) {
   const aviso = es_stock_bajo(juego.stock) ? "⚠️ Stock bajo" : "";
   console.log(
-    "ID: ${juego.id} | ${juego.nombre} (${juego.Plataforma}) - ${juego.Precio}€ | Stock: ${juego.stock} ${aviso}",
+    `ID: ${juego.id} | ${juego.nombre} (${juego.Plataforma}) - ${juego.Precio}€ | Stock: ${juego.stock} ${aviso}`,
   );
 }
 

@@ -134,6 +134,24 @@ export const videojuegos_retro = [
     Estado_Conservacion: "solo-cartucho",
     stock: 3,
   },
+  {
+    id: 16,
+    nombre: "Chrono Trigger",
+    Plataforma: "SNES",
+    Categoria: "RPG",
+    Precio: 45.00,
+    Estado_Conservacion: "usado-como-nuevo",
+    stock: 4
+  },
+  {
+    id: 17,
+    nombre: "Streets of Rage 2",
+    Plataforma: "MEGA DRIVE",
+    Categoria: "Lucha",
+    Precio: 60.00,
+    Estado_Conservacion: "nuevo-precintado",
+    stock: 10
+  }
 ];
 
 // TABLA A
