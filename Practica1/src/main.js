@@ -2,6 +2,7 @@ import { videojuegos_retro } from "./catalogo.js";
 import { gestionarMenuCatalogo } from "./menuCatalogo.js";
 import { buscarProducto } from "./menuCatalogo.js"
 import { registrarVenta } from "./ventas.js";
+import { añadirStock } from "./sumaStock.js";
 
 let opcion = 0;
 
@@ -33,11 +34,11 @@ do {
       break;
 
     case 4:
-      console.log("Reponiendo stock...");
+      añadirStock(videojuegos_retro)
       break;
 
     case 5:
-      console.log("Generando informe de caja...");
+      console.log("OPCION AUN NO DISPONIBLE");
       break;
 
     case 6:
