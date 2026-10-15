@@ -5,7 +5,7 @@ export const videojuegos_retro = [
     Plataforma: "Game Boy Advance",
     Categoria: "RPG",
     Precio: 30,
-    Estado_Conservacion: "nuevo-precintado",
+    Estado_Conservacion: "coleccionista",
     stock: 10,
   },
   {
@@ -158,22 +158,22 @@ export const videojuegos_retro = [
 export function recargo_descuento(precioBase, estado) {
   let ajuste = 0;
 
-  switch (estado) {
-    case "nuevo-precintado":
-      ajuste = 0.25; // +25%
-      break;
-    case "usado-como-nuevo":
-      ajuste = 0.00; // 0%
-      break;
-    case "usado-caja-danada":
-      ajuste = -0.15; // -15%
-      break;
-    case "solo-cartucho":
-      ajuste = -0.30; // -30%
-      break;
-    default:
-      ajuste = 0;
+  if(estado === "coleccionista") {
+    ajuste = 0.60; // +60%
   }
+  if(estado === "nuevo-precintado"){
+    ajuste = 0.25; // +25%
+  }
+  if(estado === "usado-como-nuevo"){
+      ajuste = 0.00; // 0%
+  }
+  if(estado === "usado-caja-danada"){
+      ajuste = -0.15; // -15%
+  }
+  if(estado === "solo-cartucho"){
+      ajuste = -0.30; // -30%
+  }
+
   // CALCULO DEL PRECIO BASE
   const precioAjustado = precioBase * (1 + ajuste);
   return precioAjustado;
