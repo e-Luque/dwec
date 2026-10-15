@@ -87,6 +87,7 @@ if (isNaN(cantidad) || cantidad <= 0) {
 
 Esta comprobación frena de inmediato la ejecución de la venta si el dato introducido no es un número entero positivo válido.
 
-```
+## 🏁 ​Reto de la Practica
 
-```
+En la tabla A un estado nuevo que se llame coleccionista que sube el precio un 60% y haz que un producto lo use, comprueba el precio vendiendolo
+
