@@ -64,6 +64,6 @@ export class Socio {
   }
   vencidos(hoy) {
     const dia = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-    return [...this.#prestamos].filter(([, fecha]) => new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate() + 14) < dia).map(([isbn]) => isbn);
+    return [...this.#prestamos].filter(([, fecha]) => hoy.getDate ).map(([isbn]) => isbn );
   }
 }
