@@ -81,11 +81,17 @@ export class Tablero {
     if (!tarea) throw new Error(`No existe la tarea con id ${id}`);
 
     const colDestino = this.columna(destino);
+    const colOrigen = this.dondeEsta(id);
+    if (colOrigen.nombre === "Hecho"){
+      throw new MovimientoNoPermitidoError(`No se puede mover desde la columna Hecho`)
+    }
+    if (colDestino.nombre === colOrigen.nombre){
+      throw new MovimientoNoPermitidoError(`No se permiten movimientos entre una misma columna, seleccione una columna destino distinta a ${colDestino}`);
+    }
+
     if (colDestino.llena) {
       throw new ColumnaLlenaError(`La columna ${destino} está llena`);
     }
-
-    const colOrigen = this.dondeEsta(id);
     colOrigen.quitar(id);
     colDestino.añadir(tarea);
     return tarea;
@@ -103,8 +109,10 @@ export class Tablero {
     if (colHecho.llena) {
       throw new Error("La columna Hecho está llena");
     }
-
     const colOrigen = this.dondeEsta(id);
+    if(colOrigen.nombre === colHecho.nombre){
+      throw new MovimientoNoPermitidoError(`No se puede completar lo que ya está echo`)
+    }
     colOrigen.quitar(id);
     colHecho.añadir(tarea);
 
@@ -142,7 +150,35 @@ export class Tablero {
   //     MovimientoNoPermitidoError. Todo se comprueba ANTES de tocar nada.
   //   Pista: mover y completar hacen casi lo mismo. Un método privado #trasladar(id, destino)
   //   con las comprobaciones evita escribirlas dos veces.
+  #trasladar(id, destino){
+    const tarea = this.buscar(id);
+    if (!tarea) throw new Error(`No existe la tarea con id ${id}`);
 
+    const colDestino = this.columna(destino);
+    const colOrigen = this.dondeEsta(id);
+
+    if (colOrigen.nombre === "Hecho") {
+      throw new MovimientoNoPermitidoError(`No se puede mover desde la columna Hecho`);
+    }
+    if (colDestino.nombre === colOrigen.nombre) {
+      throw new MovimientoNoPermitidoError(`No se permiten movimientos entre una misma columna, seleccione una columna destino distinta a ${colDestino.nombre}`);
+    }
+    if (colDestino.llena) {
+      throw new ColumnaLlenaError(`La columna ${destino} está llena`);
+    }
+
+    colOrigen.quitar(id);
+    colDestino.añadir(tarea);
+
+    if (colDestino.nombre === "Hecho") {
+      const tareasNuevas = tarea.alCompletar();
+      for (const nueva of tareasNuevas) {
+        this.columna("Por hacer").añadir(nueva);
+      }
+    }
+
+    return tarea;
+  }
   // ✍️ C4 (bloque C) ────────────────────────────────────────────────────────────
   // toJSON(): { version, limiteEnCurso, columnas: { "Por hacer": [datos…], … } }
   //   JSON.stringify(tablero) lo llama solo. Sin él sale "{}": los # no se ven. Usa aDatos.
