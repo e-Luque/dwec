@@ -82,7 +82,7 @@ export class Tablero {
 
     const colDestino = this.columna(destino);
     if (colDestino.llena) {
-      throw new Error(`La columna ${destino} está llena`);
+      throw new ColumnaLlenaError(`La columna ${destino} está llena`);
     }
 
     const colOrigen = this.dondeEsta(id);
