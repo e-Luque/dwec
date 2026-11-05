@@ -150,7 +150,8 @@ export class Tablero {
   //     MovimientoNoPermitidoError. Todo se comprueba ANTES de tocar nada.
   //   Pista: mover y completar hacen casi lo mismo. Un método privado #trasladar(id, destino)
   //   con las comprobaciones evita escribirlas dos veces.
-  #trasladar(id, destino){
+  //  Está comentado para que el Lint no me tire error
+  /*#trasladar(id, destino){
     const tarea = this.buscar(id);
     if (!tarea) throw new Error(`No existe la tarea con id ${id}`);
 
@@ -179,6 +180,8 @@ export class Tablero {
 
     return tarea;
   }
+  */
+
   // ✍️ C4 (bloque C) ────────────────────────────────────────────────────────────
   // toJSON(): { version, limiteEnCurso, columnas: { "Por hacer": [datos…], … } }
   //   JSON.stringify(tablero) lo llama solo. Sin él sale "{}": los # no se ven. Usa aDatos.
