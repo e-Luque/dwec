@@ -43,7 +43,33 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   //   - [data-dato="vencidas"]: las vencidas de tablero.resumen(ahora)
   //   La fecha de hoy: const ahora = hoy ?? new Date();  (los tests pasan una fija)
   function pintar() {
-    throw new Error("Sin hacer");
+    const ahora = hoy ?? new Date();
+    for (const columna of tablero.columnas) {
+      const zona = raiz.querySelector(`[data-columna="${columna.nombre}"]`);
+      const lista = zona.querySelector(".lista");
+      const contador = zona.querySelector(".contador");
+
+      pintarLista(lista, columna.ordenadas(), ahora);   
+
+      const n = columna.tareas.length;               
+      contador.textContent = columna.limiteWip === null ? `(${n})` : `(${n}/${columna.limiteWip})`;
+      
+      for (const tarjeta of lista.querySelectorAll(".tarjeta")) {
+        for (const [texto, accion] of ACCIONES[columna.nombre]){
+          const boton = document.createElement("button");
+          boton.type = "button";
+          boton.dataset.accion = accion;
+          boton.textContent = texto;
+          tarjeta.append(boton);
+        }
+      }
+    }
+    const hechas = tablero.columna("Hecho").tareas.length;
+    const total = tablero.columnas.reduce((suma, acc) => suma + acc.tareas.length, 0);
+    const progreso = total === 0 ? 0 : Math.round((hechas / total) * 100);
+    raiz.querySelector('[data-dato="progreso"]').textContent = `${progreso} %`;
+    const { vencidas } = tablero.resumen(ahora);
+    raiz.querySelector('[data-dato="vencidas"]').textContent = vencidas;
   }
 
   // 👀 Resuelto: avisar("texto") enseña el aviso; avisar("") lo esconde
