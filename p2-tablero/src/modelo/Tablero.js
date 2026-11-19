@@ -83,14 +83,14 @@ export class Tablero {
     const colDestino = this.columna(destino);
     const colOrigen = this.dondeEsta(id);
     if (colOrigen.nombre === "Hecho"){
-      throw new MovimientoNoPermitidoError(`No se puede mover desde la columna Hecho`)
+      throw new MovimientoNoPermitidoError(id, colOrigen.nombre, destino);
     }
     if (colDestino.nombre === colOrigen.nombre){
-      throw new MovimientoNoPermitidoError(`No se permiten movimientos entre una misma columna, seleccione una columna destino distinta a ${colDestino}`);
+      throw new MovimientoNoPermitidoError(id, colOrigen.nombre, destino);
     }
 
     if (colDestino.llena) {
-      throw new ColumnaLlenaError(`La columna ${destino} está llena`);
+      throw new ColumnaLlenaError(colDestino);
     }
     colOrigen.quitar(id);
     colDestino.añadir(tarea);
@@ -111,7 +111,7 @@ export class Tablero {
     }
     const colOrigen = this.dondeEsta(id);
     if(colOrigen.nombre === colHecho.nombre){
-      throw new MovimientoNoPermitidoError(`No se puede completar lo que ya está echo`)
+      throw new MovimientoNoPermitidoError(id, colOrigen.nombre, destino);
     }
     colOrigen.quitar(id);
     colHecho.añadir(tarea);
