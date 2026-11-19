@@ -111,7 +111,7 @@ export class Tablero {
     }
     const colOrigen = this.dondeEsta(id);
     if(colOrigen.nombre === colHecho.nombre){
-      throw new MovimientoNoPermitidoError(id, colOrigen.nombre, destino);
+      throw new MovimientoNoPermitidoError(id, colOrigen.nombre);
     }
     colOrigen.quitar(id);
     colHecho.añadir(tarea);
