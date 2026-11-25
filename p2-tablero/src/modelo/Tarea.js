@@ -17,14 +17,21 @@ export class Tarea {
   // new Tarea("Preparar la demo", "alta", "2026-11-05") · new Tarea("Escribir el README")
   // Los parámetros con = tienen valor por defecto: si no los pasas, prioridad "media" y sin límite.
   // (Bloque C · ✍️ C3: aquí añadirás un cuarto parámetro, el id, para recuperar las tareas guardadas)
-  constructor(titulo, prioridad = "media", limite = null) {
+constructor(titulo, prioridad = "media", limite = null, id = null) {
+  if (id === null) {
     this.id = Tarea.#siguienteId++;
-    this.titulo = titulo; // pasa por el setter: se valida también al crear
-    this.prioridad = prioridad;
-    this.limite = limite === null ? null : parsearFecha(limite);
-    this.creada = new Date();
+  } else {
+    if (!Number.isInteger(id) || id < 1) {
+      throw new RangeError("El id debe ser un entero mayor o igual que 1");
+    }
+    this.id = id;
+    Tarea.#siguienteId = Math.max(Tarea.#siguienteId, id + 1);
   }
-
+  this.titulo = titulo;
+  this.prioridad = prioridad;
+  this.limite = limite === null ? null : parsearFecha(limite);
+  this.creada = new Date();
+}
   get titulo() {
     return this.#titulo;
   }

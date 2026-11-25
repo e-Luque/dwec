@@ -83,14 +83,14 @@ export class Tablero {
     const colDestino = this.columna(destino);
     const colOrigen = this.dondeEsta(id);
     if (colOrigen.nombre === "Hecho"){
-      throw new MovimientoNoPermitidoError(`No se puede mover desde la columna Hecho`)
+      throw new MovimientoNoPermitidoError(id, colOrigen.nombre, destino);
     }
     if (colDestino.nombre === colOrigen.nombre){
-      throw new MovimientoNoPermitidoError(`No se permiten movimientos entre una misma columna, seleccione una columna destino distinta a ${colDestino}`);
+      throw new MovimientoNoPermitidoError(id, colOrigen.nombre, destino);
     }
 
     if (colDestino.llena) {
-      throw new ColumnaLlenaError(`La columna ${destino} está llena`);
+      throw new ColumnaLlenaError(colDestino);
     }
     colOrigen.quitar(id);
     colDestino.añadir(tarea);
@@ -111,7 +111,7 @@ export class Tablero {
     }
     const colOrigen = this.dondeEsta(id);
     if(colOrigen.nombre === colHecho.nombre){
-      throw new MovimientoNoPermitidoError(`No se puede completar lo que ya está echo`)
+      throw new MovimientoNoPermitidoError(id, colOrigen.nombre);
     }
     colOrigen.quitar(id);
     colHecho.añadir(tarea);
@@ -185,9 +185,28 @@ export class Tablero {
   // ✍️ C4 (bloque C) ────────────────────────────────────────────────────────────
   // toJSON(): { version, limiteEnCurso, columnas: { "Por hacer": [datos…], … } }
   //   JSON.stringify(tablero) lo llama solo. Sin él sale "{}": los # no se ven. Usa aDatos.
-
+  toJSON() {
+    const columnas = {};
+    for (const nombre of Tablero.COLUMNAS) {
+      columnas[nombre] = this.columna(nombre).tareas.map(aDatos);
+    }
+    return {
+      version: Tablero.VERSION_DATOS,
+      limiteEnCurso: this.columna("En curso").limiteWip,
+      columnas,
+    };
+  }
   /** Lo contrario de toJSON: el MISMO tablero (columnas, ids y límite WIP). Lanza si no encaja. */
   static desdeJSON(datos) {
-    throw new Error("Sin hacer");
+    if (!datos || datos.version !== Tablero.VERSION_DATOS) {
+      throw new Error("Datos del tablero inválidos o de otra versión");
+    }
+    const tablero = new Tablero(datos.limiteEnCurso);
+    for (const nombre of Tablero.COLUMNAS) {
+      for (const objeto of datos.columnas[nombre]) {
+        tablero.columna(nombre).añadir(desdeDatos(objeto));
+      }
+    }
+    return tablero;
   }
 }
