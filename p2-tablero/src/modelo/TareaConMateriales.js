@@ -15,7 +15,7 @@ export class TareaConMateriales extends Tarea {
   get materiales(){
     return this.#materiales
   }
-  
+
   contar(nombre, unidades) {
     const material = this.#materiales.find((m) => m.nombre === nombre);
     if (!material) {
@@ -25,6 +25,11 @@ export class TareaConMateriales extends Tarea {
       throw new RangeError("Las unidades deben ser un entero de 0 o más");
     }
     material.unidades = unidades;
+  }
+  //Comprobar Paso (me lo ha dado el profesor, no sabía ni que tenía que hacerlo)
+  comprobarPaso(desde) {
+    const faltan = this.#materiales.filter((m) => m.unidades === 0).map((m) => m.nombre);
+    if (desde === "Por hacer" && faltan.length > 0) throw new FaltaMaterialError(faltan);
   }
 }
 

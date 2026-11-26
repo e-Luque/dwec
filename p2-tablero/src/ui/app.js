@@ -8,12 +8,21 @@ import { crearTarjeta, pintarLista } from "./tarjeta.js";
 
 /** Botones de cada tarjeta según su columna: [texto, data-accion] */
 const ACCIONES = {
-  "Por hacer": [["Empezar →", "empezar"]],
+  "Por hacer": [["Empezar →", "empezar"],
+                ["Renombrar →", "renombrar"]],
   "En curso": [
     ["← Volver", "volver"],
     ["✓ Completar", "completar"],
   ],
   Hecho: [],
+};
+// Crear Boton (Parece que no lo tenía creado, asi que he echo uno nuevo, ni lo he probado)
+const crearBoton = (texto, accion) => {
+  const boton = document.createElement("button");
+  boton.type = "button";
+  boton.dataset.accion = accion;
+  boton.textContent = texto;
+  return boton;
 };
 
 // ✍️ B6 · validar(datos) → { campo: "mensaje" } con los errores (objeto vacío si todo está bien)
@@ -123,7 +132,9 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
     if (boton.dataset.accion === "volver") {
       cambiar(() => tablero.mover(id, "Por hacer"));
     }
-    
+    if (boton.dataset.accion === "renombrar") {
+      crearFormulario(tarjeta.dataset.datos)
+    }
   });
 
   // ✍️ B6 · submit de `form`: preventDefault, leerFormulario, validar y mostrarErrores. Si hay errores,
@@ -144,6 +155,18 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
   });
   pintar();
   return { pintar };
+}
+const crear = (etiqueta, datos) => Object.assign(document.createElement(etiqueta), datos);
+function crearFormulario(tarea) {
+  const form = crear("form", { noValidate: true });
+  form.dataset.form = "renombrar";
+  const etiqueta = crear("label", { textContent: `Título nuevo de «${tarea.titulo}»` });
+  etiqueta.append(crear("input", { name: "titulo", type: "text", value:tarea.titulo }));
+  const error = crear("p", { className: "error" });
+  error.dataset.errorDe = "titulo";
+  const enviar = crear("button", { type: "submit", textContent: "Guardar" });
+  form.append(etiqueta, error, enviar, crearBoton("Cancelar", "cancelar"));
+  return form;
 }
 
 (void ACCIONES, ErrorTablero, delegar, leerFormulario, mostrarErrores, pintarLista); // (borra esta línea cuando los uses)
