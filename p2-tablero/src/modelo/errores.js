@@ -36,3 +36,9 @@ export class MovimientoNoPermitidoError extends ErrorTablero{
         this.hasta = hasta; 
     }
 }
+
+export class FaltaMaterialError extends ErrorTablero {
+    constructor(materiales){
+        super(`Faltan materiales ${materiales} - la tarea se queda donde estaba`)
+    }
+}
