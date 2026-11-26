@@ -50,7 +50,7 @@ export class Tablero {
   //   y pásaselo al constructor, en su orden (new Tarea(datos) NO vale: espera el título)
   crearTarea(datos) {
     let tarea;
-    if (datos.materiales){
+    if (datos.materiales !== undefined){
       tarea = new TareaConMateriales(datos.titulo, datos.prioridad, datos.limite, datos.materiales);
     } else if (datos.cadaDias) {
       tarea = new TareaRecurrente(datos.titulo, datos.prioridad, datos.limite, datos.cadaDias);
