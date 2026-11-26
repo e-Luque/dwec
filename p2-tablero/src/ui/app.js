@@ -8,8 +8,7 @@ import { crearTarjeta, pintarLista } from "./tarjeta.js";
 
 /** Botones de cada tarjeta según su columna: [texto, data-accion] */
 const ACCIONES = {
-  "Por hacer": [["Empezar →", "empezar"],
-                ["Renombrar →", "renombrar"]],
+  "Por hacer": [["Empezar →", "empezar"]],
   "En curso": [
     ["← Volver", "volver"],
     ["✓ Completar", "completar"],
@@ -76,16 +75,20 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
       const n = columna.tareas.length;               
       contador.textContent = columna.limiteWip === null ? `(${n})` : `(${n}/${columna.limiteWip})`;
       
-      for (const tarjeta of lista.querySelectorAll(".tarjeta")) {
-        for (const [texto, accion] of ACCIONES[columna.nombre]){
-          const boton = document.createElement("button");
-          boton.type = "button";
-          boton.dataset.accion = accion;
-          boton.textContent = texto;
-          tarjeta.append(boton);
+       for (const tarjeta of lista.querySelectorAll(".tarjeta")) {
+        for (const [texto, accion] of ACCIONES[columna.nombre]) {
+          tarjeta.append(crearBoton(texto, accion));
+        }
+        
+        const tarea = tablero.buscar(Number(tarjeta.dataset.id));
+        if (columna.nombre === "Por hacer" && tarea.limite) {
+          tarjeta.append(crearBoton("Renombrar y empezar", "renombrar"));
         }
       }
     }
+    if (columna.nombre === "Por hacer" && tablero.buscar(Number(tarjeta.dataset.id)).limite){
+      tarjeta.append(crearBoton("Renombrar", "renombrar"));
+    } 
     const hechas = tablero.columna("Hecho").tareas.length;
     const total = tablero.columnas.reduce((suma, acc) => suma + acc.tareas.length, 0);
     const progreso = total === 0 ? 0 : Math.round((hechas / total) * 100);
@@ -133,7 +136,10 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
       cambiar(() => tablero.mover(id, "Por hacer"));
     }
     if (boton.dataset.accion === "renombrar") {
-      crearFormulario(tarjeta.dataset.datos)
+      if (tarjeta.querySelector("form")) return; 
+      const formulario = crearFormulario(tablero.buscar(id));
+      tarjeta.append(formulario);
+      formulario.elements.titulo.focus();
     }
   });
 
@@ -153,9 +159,12 @@ export function iniciarApp(raiz, tablero, { hoy = null, alCambiar = () => {} } =
     cambiar(() => tablero.crearTarea(datos));
     form.reset();
   });
+  
   pintar();
   return { pintar };
 }
+
+//Crear Formulario (Lo da el ejercicio)
 const crear = (etiqueta, datos) => Object.assign(document.createElement(etiqueta), datos);
 function crearFormulario(tarea) {
   const form = crear("form", { noValidate: true });
