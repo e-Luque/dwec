@@ -15,7 +15,7 @@ const ACCIONES = {
   ],
   Hecho: [],
 };
-// Crear Boton (Parece que no lo tenía creado, asi que he echo uno nuevo, ni lo he probado)
+// Crear Boton (Parece que no lo tenía creado, asi que he echo uno nuevo, este no me lo ha dado el profesor)
 const crearBoton = (texto, accion) => {
   const boton = document.createElement("button");
   boton.type = "button";

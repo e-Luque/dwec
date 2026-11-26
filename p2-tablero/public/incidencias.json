@@ -1,0 +1,7 @@
+[
+  { "ticket": "T-101", "asunto": "Proyector sin señal", "gravedad": "critica", "plazo": "30/11/2026" },
+  { "ticket": "T-102", "asunto": "Ratón roto", "gravedad": "leve", "plazo": "05/12/2026" },
+  { "ticket": "T-103", "asunto": "Sin wifi", "gravedad": "otro", "plazo": "10/12/2026" },
+  { "ticket": "T-101", "asunto": " Proyector sin señal ", "gravedad": "seria", "plazo": "30/11/2026" },
+  { "ticket": "T-104", "asunto": "Teclado atascado", "gravedad": "seria", "plazo": "31/02/2027" }
+]
